@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define PHY_RST_Pin GPIO_PIN_10
 #define PHY_RST_GPIO_Port GPIOB
+#define USART1_CK_Pin GPIO_PIN_8
+#define USART1_CK_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 #define CONVERTER_PROTOCOL_HEAD 0XAA

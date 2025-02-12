@@ -657,9 +657,9 @@ void serial_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len)
 void serial_485_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len)
 {
    // pd8
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(USART1_CK_GPIO_Port, USART1_CK_Pin, GPIO_PIN_SET);
   HAL_UART_Transmit(serial->huart, pData, len, 0xFF);
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(USART1_CK_GPIO_Port, USART1_CK_Pin, GPIO_PIN_RESET);
 }
 uint8_t serial_unpack_recieve_data(struct serial_t *serial, uint8_t *pData, uint16_t len, struct converter_protocol *protocol)
 {

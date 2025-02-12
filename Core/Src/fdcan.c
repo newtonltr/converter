@@ -21,6 +21,8 @@
 #include "fdcan.h"
 
 /* USER CODE BEGIN 0 */
+#include "usart.h"
+
 struct fdcan_rx_frame fdcan_rx_frame;
 uint8_t fdcan_rx_flag = 0;
 /* USER CODE END 0 */
