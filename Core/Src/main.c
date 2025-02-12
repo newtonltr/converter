@@ -68,6 +68,7 @@ void fdcan_task(void)
     fdcan_rx_flag = 0;
     can_data_packet(&fdcan_rx_frame, can_data_pack, &len);
     serial_block_write(&rs422, can_data_pack, len);
+    serial_485_block_write(&rs485, can_data_pack, len);
   }
 }
 struct converter_protocol protocol_pack;
@@ -75,6 +76,10 @@ struct fdcan_tx_frame fdcan_tx_frame;
 void serial_task(void)
 {
   if (serial_get_data(&rs422, &protocol_pack)) {
+    serial_data_packet(&protocol_pack, &fdcan_tx_frame);
+    fdcan1_send(&fdcan_tx_frame);
+  }
+  if (serial_get_data(&rs485, &protocol_pack)) {
     serial_data_packet(&protocol_pack, &fdcan_tx_frame);
     fdcan1_send(&fdcan_tx_frame);
   }
@@ -120,6 +125,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   serial_start(&rs422, &huart2);
+  serial_start(&rs485, &huart1);
   fdcan1_start();
   /* USER CODE END 2 */
 

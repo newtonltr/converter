@@ -61,10 +61,12 @@ struct serial_t {
 };
 
 extern struct serial_t rs422;
+extern struct serial_t rs485;
 
 void serial_start(struct serial_t *serial, UART_HandleTypeDef *huart);
 void serial_dma_write(struct serial_t *serial, uint8_t *pData, uint8_t len);
 void serial_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len);
+void serial_485_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len);
 uint8_t serial_get_data(struct serial_t *serial, struct converter_protocol *protocol);
 void serial_data_packet(struct converter_protocol *protocol, struct fdcan_tx_frame *tx_frame);
 

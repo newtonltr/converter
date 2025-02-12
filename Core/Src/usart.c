@@ -23,6 +23,7 @@
 /* USER CODE BEGIN 0 */
 
 struct serial_t rs422;
+struct serial_t rs485;
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -653,6 +654,13 @@ void serial_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len)
 {
 	HAL_UART_Transmit(serial->huart, pData, len, 0xFF);
 }
+void serial_485_block_write(struct serial_t *serial, uint8_t *pData, uint8_t len)
+{
+   // pd8
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, GPIO_PIN_SET);
+  HAL_UART_Transmit(serial->huart, pData, len, 0xFF);
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_8, GPIO_PIN_RESET);
+}
 uint8_t serial_unpack_recieve_data(struct serial_t *serial, uint8_t *pData, uint16_t len, struct converter_protocol *protocol)
 {
   struct can_pack_protocol_head *head = (struct can_pack_protocol_head *)pData;
@@ -706,6 +714,11 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
             rs422.rx_flag = 1;
             rs422.size = Size;
             HAL_UARTEx_ReceiveToIdle_DMA(rs422.huart, rs422.rx_buffer, SERIAL_RX_BUFFER_SIZE);
+        }
+        if (huart == rs485.huart) {
+            rs485.rx_flag = 1;
+            rs485.size = Size;
+            HAL_UARTEx_ReceiveToIdle_DMA(rs485.huart, rs485.rx_buffer, SERIAL_RX_BUFFER_SIZE);
         }
     }
 
